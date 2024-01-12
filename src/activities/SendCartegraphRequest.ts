@@ -19,16 +19,16 @@ interface SendCartegraphRequestInputs {
      * @required
      */
     path:
-    | "api/v1/classes/{className}"
-    | "api/v1/classes/{className}/{id}"
-    | "api/v1/classes/{className}/{id}/{childClassName}"
-    | string;
+        | "api/v1/classes/{className}"
+        | "api/v1/classes/{className}/{id}"
+        | "api/v1/classes/{className}/{id}/{childClassName}"
+        | string;
 
     /**
      * @description The query string parameters to send on the request.
      */
     query?: {
-        [key: string]: any;
+        [key: string]: string | number | boolean;
     };
 
     /**
@@ -42,7 +42,7 @@ interface SendCartegraphRequestInputs {
      * @description The headers to send on the request.
      */
     headers?: {
-        [key: string]: any;
+        [key: string]: string;
     };
 }
 
@@ -60,7 +60,9 @@ interface SendCartegraphRequestOutputs {
  * @supportedApps EXB, GWV, GVH, WAB
  */
 export default class SendCartegraphRequest implements IActivityHandler {
-    async execute(inputs: SendCartegraphRequestInputs): Promise<SendCartegraphRequestOutputs> {
+    async execute(
+        inputs: SendCartegraphRequestInputs,
+    ): Promise<SendCartegraphRequestOutputs> {
         const { body, headers, method, path, query, service } = inputs;
         if (!service) {
             throw new Error("service is required");
@@ -75,7 +77,7 @@ export default class SendCartegraphRequest implements IActivityHandler {
         const url = new URL(`${service.url}/${path}`);
         if (query) {
             for (const [key, value] of Object.entries(query)) {
-                url.searchParams.append(key, value);
+                url.searchParams.append(key, value?.toString() || "");
             }
         }
 
@@ -84,7 +86,7 @@ export default class SendCartegraphRequest implements IActivityHandler {
             body: body ? JSON.stringify(body) : undefined,
             headers: {
                 ...(body ? { "Content-Type": "application/json" } : undefined),
-                ...headers
+                ...headers,
             },
         });
 

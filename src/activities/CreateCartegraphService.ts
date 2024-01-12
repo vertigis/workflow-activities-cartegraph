@@ -24,7 +24,7 @@ interface CreateCartegraphServiceInputs {
     /**
      * @description Boolean should be true to check for Internal Request role security.
      */
-    isInternalRequest
+    isInternalRequest;
 }
 
 interface CreateCartegraphServiceOutputs {
@@ -42,8 +42,10 @@ interface CreateCartegraphServiceOutputs {
  * @supportedApps EXB, GWV, GVH, WAB
  */
 export default class CreateCartegraphService implements IActivityHandler {
-    async execute(inputs: CreateCartegraphServiceInputs): Promise<CreateCartegraphServiceOutputs> {
-        const { isInternalRequest, password, url, username} = inputs;
+    async execute(
+        inputs: CreateCartegraphServiceInputs,
+    ): Promise<CreateCartegraphServiceOutputs> {
+        const { isInternalRequest, password, url, username } = inputs;
         if (!url) {
             throw new Error("url is required");
         }
@@ -55,7 +57,7 @@ export default class CreateCartegraphService implements IActivityHandler {
         }
 
         const normalizedUrl = url.replace(/\/*$/, "");
-        
+
         const response = await fetch(`${normalizedUrl}/api/v1/authenticate`, {
             method: "post",
             body: new URLSearchParams({
@@ -69,12 +71,14 @@ export default class CreateCartegraphService implements IActivityHandler {
             },
         });
 
-        const json = await response.json();
+        if (!response.ok) {
+            throw new Error("Unable to authenticate with Cartegraph service.");
+        }
 
         return {
             service: {
-                url: normalizedUrl
-            }
+                url: normalizedUrl,
+            },
         };
     }
 }

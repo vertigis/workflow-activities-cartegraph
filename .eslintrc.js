@@ -4,4 +4,12 @@ module.exports = {
         tsconfigRootDir: __dirname,
     },
     rules: {},
+    overrides: [
+        {
+            files: ["src/activities/*.ts"],
+            rules: {
+                "@typescript-eslint/no-redundant-type-constituents": "off"
+            }
+        }
+    ],
 };

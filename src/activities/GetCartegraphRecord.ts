@@ -44,8 +44,11 @@ interface GetCartegraphRecordOutputs {
  * @supportedApps EXB, GWV, GVH, WAB
  */
 export default class GetCartegraphRecord implements IActivityHandler {
-    async execute(inputs: GetCartegraphRecordInputs): Promise<GetCartegraphRecordOutputs> {
-        const { childClassName, className, fields, filter, id, service, sort } = inputs;
+    async execute(
+        inputs: GetCartegraphRecordInputs,
+    ): Promise<GetCartegraphRecordOutputs> {
+        const { childClassName, className, fields, filter, id, service, sort } =
+            inputs;
         if (!service) {
             throw new Error("service is required");
         }
@@ -54,7 +57,9 @@ export default class GetCartegraphRecord implements IActivityHandler {
         }
 
         // https://yourserver.com/cartegraph/api/v1/classes/{className}/{id}/{childClassName}
-        const url = new URL(`${service.url}/api/v1/classes/${encodeURIComponent(className)}`);
+        const url = new URL(
+            `${service.url}/api/v1/classes/${encodeURIComponent(className)}`,
+        );
         if (id) {
             url.pathname += `/${encodeURIComponent(id)}`;
             if (childClassName) {

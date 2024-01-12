@@ -42,7 +42,9 @@ interface DeleteCartegraphRecordOutputs {
  * @supportedApps EXB, GWV, GVH, WAB
  */
 export default class DeleteCartegraphRecord implements IActivityHandler {
-    async execute(inputs: DeleteCartegraphRecordInputs): Promise<DeleteCartegraphRecordOutputs> {
+    async execute(
+        inputs: DeleteCartegraphRecordInputs,
+    ): Promise<DeleteCartegraphRecordOutputs> {
         const { className, filter, id, service } = inputs;
         if (!service) {
             throw new Error("service is required");
@@ -52,7 +54,9 @@ export default class DeleteCartegraphRecord implements IActivityHandler {
         }
 
         //https://yourserver.com/cartegraph/api/v1/classes/cgSignsClass?filter=(([MUTCDCode\Classification] is equal to "Regulatory"))
-        const url = new URL(`${service.url}/api/v1/classes/${encodeURIComponent(className)}`);
+        const url = new URL(
+            `${service.url}/api/v1/classes/${encodeURIComponent(className)}`,
+        );
         if (id) {
             url.pathname += `/${id}`;
         }

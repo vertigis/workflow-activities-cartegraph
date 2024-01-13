@@ -2,7 +2,7 @@ import type { IActivityHandler } from "@vertigis/workflow";
 import { CartegraphService } from "../CartegraphService";
 import { getResponseError } from "../CartegraphRequestError";
 
-interface DeleteCartegraphRecordInputs {
+interface UpdateCartegraphRecordInputs {
     /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 
     /**
@@ -12,10 +12,16 @@ interface DeleteCartegraphRecordInputs {
     service: CartegraphService;
 
     /**
-     * @description Cartegraph class name. For example, cgSignsClass,
+     * @description Cartegraph class name For example, cgSignsClass.
      * @required
      */
     className: "cgSignsClass" | string;
+
+    /**
+     * @description The content of the record to create.
+     * @required
+     */
+    content: Record<string, any>;
 
     /**
      * @displayName ID
@@ -24,52 +30,61 @@ interface DeleteCartegraphRecordInputs {
     id?: number;
 
     /**
-     * @description Filter to apply to the delete.
+     * @description Cartegraph class name For example, cgSigns_cgInspectionsClass.
      */
-    filter: string;
+    childClassName?: "cgSigns_cgInspectionsClass" | string;
+
+    /**
+     * @description When set to true, any fields with a value of null or "" will not be returned.
+     */
+    ignoreNullFields?: boolean;
 
     /* eslint-enable @typescript-eslint/no-redundant-type-constituents */
 }
 
-interface DeleteCartegraphRecordOutputs {
+interface UpdateCartegraphRecordOutputs {
     /**
      * @description The result of the REST API request.
      */
-    result: {
-        DeletedRecordCount: number;
-    };
+    result: Record<string, object[]>;
 }
 
 /**
  * @category Cartegraph
- * @description Delete one or more records for a recordset using a filter.
+ * @description Create one or more records for a recordset.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB
  */
-export default class DeleteCartegraphRecord implements IActivityHandler {
+export default class UpdateCartegraphRecord implements IActivityHandler {
     async execute(
-        inputs: DeleteCartegraphRecordInputs,
-    ): Promise<DeleteCartegraphRecordOutputs> {
-        const { className, filter, id, service } = inputs;
+        inputs: UpdateCartegraphRecordInputs,
+    ): Promise<UpdateCartegraphRecordOutputs> {
+        const { childClassName, className, id, content, service } = inputs;
         if (!service) {
             throw new Error("service is required");
         }
         if (!className) {
             throw new Error("className is required");
         }
+        if (!content) {
+            throw new Error("content is required");
+        }
 
-        //https://yourserver.com/cartegraph/api/v1/classes/cgSignsClass?filter=(([MUTCDCode\Classification] is equal to "Regulatory"))
+        // https://yourserver.com/cartegraph/api/v1/classes/{className}/{id}/{childClassName}
         const url = new URL(
             `${service.url}/api/v1/classes/${encodeURIComponent(className)}`,
         );
         if (id) {
-            url.pathname += `/${id}`;
+            url.pathname += `/${encodeURIComponent(id)}`;
+            if (childClassName) {
+                url.pathname += `/${encodeURIComponent(childClassName)}`;
+            }
         }
-        filter && url.searchParams.append("filter", filter);
 
         const response = await fetch(url, {
-            method: "delete",
+            method: "put",
             credentials: "include",
+            body: JSON.stringify(content),
         });
 
         const error = await getResponseError(response);

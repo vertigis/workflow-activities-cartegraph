@@ -7,6 +7,10 @@ This project contains activities for interacting with the [Cartegraph](https://w
 
 ## Requirements
 
+### Cartegraph Versions
+
+The Cartegraph activities are designed to work with Cartegraph versions `28.1` and above.
+
 ### VertiGIS Studio Workflow Versions
 
 The Cartegraph activities are designed to work with VertiGIS Studio Workflow versions `5.36` and above.
@@ -25,6 +29,7 @@ To use the Cartegraph activities in [VertiGIS Studio Workflow Designer](https://
     - API: `JavaScript`
     - URL: The URL to this activity pack manifest
         - Use https://unpkg.com/@vertigis/workflow-activities-cartegraph/activitypack.json for the latest version
+        - Use https://unpkg.com/@vertigis/workflow-activities-cartegraph@1/activitypack.json for the latest revision of a specific major version
         - Use https://unpkg.com/@vertigis/workflow-activities-cartegraph@1.0.0/activitypack.json for a specific version
         - Use https://localhost:5000/activitypack.json for a local development version
     - Title: Your desired title
@@ -37,8 +42,14 @@ To use the Cartegraph activities in [VertiGIS Studio Workflow Designer](https://
 1. Establish a connection to the Cartegraph service
     1. Add the `Create Cartegraph Service` activity to a workflow
     1. Set the `URL` input to the root URL of your Cartegraph server. For example, `https://yourserver.com/cartegraph`.
-    1. If you have a username and password, assign them to the `Username` and `Password` inputs
-    - **IMPORTANT:** tokens and passwords are credentials that should not be hard coded into workflows. These values should be acquired by the workflow at runtime from the end user or from another secure system.
+1. Ensure the user is signed into Cartegraph in their current web browser session
+    1. Add the `Get Cartegraph Session Info` activity to a workflow
+    1. Set the `Service` input of the activity to be the output of the `Create Cartegraph Service` activity
+    1. If the `isAuthenticated` output of the activity is `true` then the user is signed in. If the user is not signed in, do one of the following:
+        - Use a `Display Form` activity to present the user with a message that they need to sign into Cartegraph first. 
+            - The form could include a link to the Cartegraph sign-in page using `=$cartegraphService1.service.signInUrl`.
+        - Use a `Display Form` activity to prompt the user for their username and password and provide them to the `Username` and `Password` inputs of the `Cartegraph Sign In` activity
+            - **IMPORTANT:** passwords should never be hard coded into workflows. These values should be acquired by the workflow at runtime from the end user or from another secure system.
 1. Use the Cartegraph service
     1. Add one of the other Cartegraph activities to the workflow. For example, `Get Cartegraph Record`.
     1. Set the `Service` input of the activity to be the output of the `Create Cartegraph Service` activity

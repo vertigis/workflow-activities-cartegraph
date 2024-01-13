@@ -1,7 +1,10 @@
 import type { IActivityHandler } from "@vertigis/workflow";
 import { CartegraphService } from "../CartegraphService";
+import { getResponseError } from "../CartegraphRequestError";
 
 interface SendCartegraphRequestInputs {
+    /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+
     /**
      * @description The Cartegraph REST API Service.
      * @required
@@ -19,9 +22,15 @@ interface SendCartegraphRequestInputs {
      * @required
      */
     path:
+        | "api/v1/authenticate/signout"
         | "api/v1/classes/{className}"
         | "api/v1/classes/{className}/{id}"
         | "api/v1/classes/{className}/{id}/{childClassName}"
+        | "api/v1/attachments/{className}/{id}"
+        | "api/v1/attachments/{className}/{id}/{childClassName}"
+        | "api/v1/attachments/primary/{className}/{id}"
+        | "api/v1/attachments/primary/thumbnail/{className}/{id}"
+        | "api/v1/attachments/thumbnail/{className}/{id}"
         | string;
 
     /**
@@ -44,17 +53,20 @@ interface SendCartegraphRequestInputs {
     headers?: {
         [key: string]: string;
     };
+
+    /* eslint-enable @typescript-eslint/no-redundant-type-constituents */
 }
 
 interface SendCartegraphRequestOutputs {
     /**
-     * @description The result of the activity.
+     * @description The result of the REST API request.
      */
     result: any;
 }
 
 /**
  * @category Cartegraph
+ * @defaultName cartegraphRequest
  * @description Sends a request to the Cartegraph REST API.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB
@@ -84,11 +96,17 @@ export default class SendCartegraphRequest implements IActivityHandler {
         const response = await fetch(url, {
             method,
             body: body ? JSON.stringify(body) : undefined,
+            credentials: "include",
             headers: {
                 ...(body ? { "Content-Type": "application/json" } : undefined),
                 ...headers,
             },
         });
+
+        const error = await getResponseError(response);
+        if (error) {
+            throw error;
+        }
 
         return {
             result: await response.json(),

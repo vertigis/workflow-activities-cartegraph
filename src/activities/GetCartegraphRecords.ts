@@ -2,7 +2,7 @@ import type { IActivityHandler } from "@vertigis/workflow";
 import { CartegraphService } from "../CartegraphService";
 import { getResponseError } from "../CartegraphRequestError";
 
-interface GetCartegraphRecordInputs {
+interface GetCartegraphRecordsInputs {
     /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 
     /**
@@ -77,23 +77,24 @@ interface GetCartegraphRecordInputs {
     /* eslint-enable @typescript-eslint/no-redundant-type-constituents */
 }
 
-interface GetCartegraphRecordOutputs {
+interface GetCartegraphRecordsOutputs {
     /**
      * @description The result of the REST API request.
      */
-    result: any;
+    result: Record<string, object[]>;
 }
 
 /**
  * @category Cartegraph
+ * @defaultName cgRecords
  * @description Retrieve a list of one or more records of a recordset.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB
  */
-export default class GetCartegraphRecord implements IActivityHandler {
+export default class GetCartegraphRecords implements IActivityHandler {
     async execute(
-        inputs: GetCartegraphRecordInputs,
-    ): Promise<GetCartegraphRecordOutputs> {
+        inputs: GetCartegraphRecordsInputs,
+    ): Promise<GetCartegraphRecordsOutputs> {
         const {
             bypassRoleBasedFiltering,
             childClassName,
@@ -120,7 +121,7 @@ export default class GetCartegraphRecord implements IActivityHandler {
         const url = new URL(
             `${service.url}/api/v1/classes/${encodeURIComponent(className)}`,
         );
-        if (id) {
+        if (typeof id === "number") {
             url.pathname += `/${encodeURIComponent(id)}`;
             if (childClassName) {
                 url.pathname += `/${encodeURIComponent(childClassName)}`;
@@ -130,24 +131,26 @@ export default class GetCartegraphRecord implements IActivityHandler {
         fields && url.searchParams.append("fields", fields);
         filter && url.searchParams.append("filter", filter);
         sort && url.searchParams.append("sort", sort);
-        limit && url.searchParams.append("limit", limit.toString());
-        offset && url.searchParams.append("offset", offset.toString());
-        currentLocationLatitude &&
+        typeof limit === "number" &&
+            url.searchParams.append("limit", limit.toString());
+        typeof offset === "number" &&
+            url.searchParams.append("offset", offset.toString());
+        typeof currentLocationLatitude === "number" &&
             url.searchParams.append(
                 "currentLocationLatitude",
                 currentLocationLatitude.toString(),
             );
-        currentLocationLongitude &&
+        typeof currentLocationLongitude === "number" &&
             url.searchParams.append(
                 "currentLocationLongitude",
                 currentLocationLongitude.toString(),
             );
-        bypassRoleBasedFiltering &&
+        typeof bypassRoleBasedFiltering === "boolean" &&
             url.searchParams.append(
                 "bypassRoleBasedFiltering",
                 bypassRoleBasedFiltering.toString(),
             );
-        ignoreNullFields &&
+        typeof ignoreNullFields === "boolean" &&
             url.searchParams.append(
                 "ignoreNullFields",
                 ignoreNullFields.toString(),

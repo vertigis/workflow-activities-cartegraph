@@ -38,7 +38,7 @@ interface CartegraphSignInOutputs {
 
 /**
  * @category Cartegraph
- * @defaultName cartegraphSignIn
+ * @defaultName cgSignIn
  * @description Signs a user into Cartegraph using their username and password.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB

@@ -51,6 +51,7 @@ interface UpdateCartegraphRecordOutputs {
 
 /**
  * @category Cartegraph
+ * @defaultName cgUpdate
  * @description Create one or more records for a recordset.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB
@@ -74,7 +75,7 @@ export default class UpdateCartegraphRecord implements IActivityHandler {
         const url = new URL(
             `${service.url}/api/v1/classes/${encodeURIComponent(className)}`,
         );
-        if (id) {
+        if (typeof id === "number") {
             url.pathname += `/${encodeURIComponent(id)}`;
             if (childClassName) {
                 url.pathname += `/${encodeURIComponent(childClassName)}`;

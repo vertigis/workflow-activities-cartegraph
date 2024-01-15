@@ -42,6 +42,7 @@ interface DeleteCartegraphRecordOutputs {
 
 /**
  * @category Cartegraph
+ * @defaultName cgDelete
  * @description Delete one or more records for a recordset using a filter.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB
@@ -62,7 +63,7 @@ export default class DeleteCartegraphRecord implements IActivityHandler {
         const url = new URL(
             `${service.url}/api/v1/classes/${encodeURIComponent(className)}`,
         );
-        if (id) {
+        if (typeof id === "number") {
             url.pathname += `/${id}`;
         }
         filter && url.searchParams.append("filter", filter);

@@ -23,7 +23,7 @@ interface CreateCartegraphServiceOutputs {
 
 /**
  * @category Cartegraph
- * @defaultName cartegraphService
+ * @defaultName cgService
  * @description Creates an authenticated connection to a Cartegraph service that can be used with other Cartegraph activities.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB

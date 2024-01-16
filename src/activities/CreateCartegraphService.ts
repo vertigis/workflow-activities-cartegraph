@@ -9,7 +9,7 @@ interface CreateCartegraphServiceInputs {
      * @description The URL of the Cartegraph REST API.
      * @required
      */
-    url: "https://yourserver.com/cartegraph" | string;
+    url?: "https://yourserver.com/cartegraph" | string;
 
     /* eslint-enable @typescript-eslint/no-redundant-type-constituents */
 }
@@ -23,7 +23,7 @@ interface CreateCartegraphServiceOutputs {
 
 /**
  * @category Cartegraph
- * @defaultName cartegraphService
+ * @defaultName cgService
  * @description Creates an authenticated connection to a Cartegraph service that can be used with other Cartegraph activities.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB

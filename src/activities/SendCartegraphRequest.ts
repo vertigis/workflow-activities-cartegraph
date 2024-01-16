@@ -9,20 +9,19 @@ interface SendCartegraphRequestInputs {
      * @description The Cartegraph REST API Service.
      * @required
      */
-    service: CartegraphService;
+    service?: CartegraphService;
 
     /**
      * @description The HTTP request method.
      * @required
      */
-    method: "GET" | "POST" | "PUT" | "DELETE";
+    method?: "GET" | "POST" | "PUT" | "DELETE";
 
     /**
      * @description The Cartegraph REST API resource or operation to request.
      * @required
      */
-    path:
-        | "api/v1/authenticate/signout"
+    path?:
         | "api/v1/classes/{className}"
         | "api/v1/classes/{className}/{id}"
         | "api/v1/classes/{className}/{id}/{childClassName}"
@@ -31,6 +30,13 @@ interface SendCartegraphRequestInputs {
         | "api/v1/attachments/primary/{className}/{id}"
         | "api/v1/attachments/primary/thumbnail/{className}/{id}"
         | "api/v1/attachments/thumbnail/{className}/{id}"
+        | "api/v1/discover"
+        | "api/v1/meta/Classes"
+        | "api/v1/meta/Classes/{className}"
+        | "api/v1/meta/Classes/targetedlists"
+        | "api/v1/meta/Classes/targetedlists/{listName}"
+        | "api/v1/Security/Classes"
+        | "api/v1/user"
         | string;
 
     /**
@@ -66,7 +72,7 @@ interface SendCartegraphRequestOutputs {
 
 /**
  * @category Cartegraph
- * @defaultName cartegraphRequest
+ * @defaultName cgRequest
  * @description Sends a request to the Cartegraph REST API.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB

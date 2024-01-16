@@ -6,13 +6,13 @@ interface CartegraphSignInInputs {
      * @description The Cartegraph REST API Service.
      * @required
      */
-    service: CartegraphService;
+    service?: CartegraphService;
 
     /**
      * @description The username.
      * @required
      */
-    username: string;
+    username?: string;
 
     /**
      * @description The password.
@@ -23,7 +23,7 @@ interface CartegraphSignInInputs {
     /**
      * @description Boolean should be true to check for Internal Request role security.
      */
-    isInternalRequest;
+    isInternalRequest?: boolean;
 }
 
 interface CartegraphSignInOutputs {
@@ -38,7 +38,7 @@ interface CartegraphSignInOutputs {
 
 /**
  * @category Cartegraph
- * @defaultName cartegraphSignIn
+ * @defaultName cgSignIn
  * @description Signs a user into Cartegraph using their username and password.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB

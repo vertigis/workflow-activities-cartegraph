@@ -7,7 +7,7 @@ interface GetCartegraphSessionInfoInputs {
      * @description The Cartegraph REST API Service.
      * @required
      */
-    service: CartegraphService;
+    service?: CartegraphService;
 }
 
 interface GetCartegraphSessionInfoOutputs {
@@ -32,7 +32,7 @@ interface GetCartegraphSessionInfoOutputs {
 
 /**
  * @category Cartegraph
- * @defaultName cartegraphSession
+ * @defaultName cgSession
  * @description Allows a client to check information about the current session.
  * @clientOnly
  * @supportedApps EXB, GWV, GVH, WAB

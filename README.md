@@ -47,13 +47,13 @@ To use the Cartegraph activities in [VertiGIS Studio Workflow Designer](https://
     1. Set the `Service` input of the activity to be the output of the `Create Cartegraph Service` activity
     1. If the `isAuthenticated` output of the activity is `true` then the user is signed in. If the user is not signed in, do one of the following:
         - Use a `Display Form` activity to present the user with a message that they need to sign into Cartegraph first. 
-            - The form could include a link to the Cartegraph sign-in page using `=$cartegraphService1.service.signInUrl`.
+            - The form could include a link to the Cartegraph sign-in page using `=$cgService1.service.signInUrl`.
         - Use a `Display Form` activity to prompt the user for their username and password and provide them to the `Username` and `Password` inputs of the `Cartegraph Sign In` activity
             - **IMPORTANT:** passwords should never be hard coded into workflows. These values should be acquired by the workflow at runtime from the end user or from another secure system.
 1. Use the Cartegraph service
     1. Add one of the other Cartegraph activities to the workflow. For example, `Get Cartegraph Record`.
     1. Set the `Service` input of the activity to be the output of the `Create Cartegraph Service` activity
-        - Typically this would use an expression like `=$cartegraphService1.service`
+        - Typically this would use an expression like `=$cgService1.service`
     1. Supply any additional inputs to the activity
     1. Supply the `result` output of the activity to the inputs of other activities in the workflow
 1. Run the workflow

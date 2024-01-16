@@ -9,19 +9,19 @@ interface SendCartegraphRequestInputs {
      * @description The Cartegraph REST API Service.
      * @required
      */
-    service: CartegraphService;
+    service?: CartegraphService;
 
     /**
      * @description The HTTP request method.
      * @required
      */
-    method: "GET" | "POST" | "PUT" | "DELETE";
+    method?: "GET" | "POST" | "PUT" | "DELETE";
 
     /**
      * @description The Cartegraph REST API resource or operation to request.
      * @required
      */
-    path:
+    path?:
         | "api/v1/classes/{className}"
         | "api/v1/classes/{className}/{id}"
         | "api/v1/classes/{className}/{id}/{childClassName}"

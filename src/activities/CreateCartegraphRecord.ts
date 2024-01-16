@@ -9,19 +9,19 @@ interface CreateCartegraphRecordInputs {
      * @description The Cartegraph REST API Service.
      * @required
      */
-    service: CartegraphService;
+    service?: CartegraphService;
 
     /**
      * @description Cartegraph class name. For example, cgSignsClass.
      * @required
      */
-    className: "cgSignsClass" | string;
+    className?: "cgSignsClass" | string;
 
     /**
      * @description The content of the record to create.
      * @required
      */
-    content: Record<string, any>;
+    content?: Record<string, any>;
 
     /**
      * @displayName ID

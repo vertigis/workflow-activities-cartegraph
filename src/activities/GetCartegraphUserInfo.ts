@@ -7,7 +7,7 @@ interface GetCartegraphUserInfoInputs {
      * @description The Cartegraph REST API Service.
      * @required
      */
-    service: CartegraphService;
+    service?: CartegraphService;
 }
 
 interface GetCartegraphUserInfoOutputs {

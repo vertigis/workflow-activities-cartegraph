@@ -9,13 +9,13 @@ interface GetCartegraphRecordsInputs {
      * @description The Cartegraph REST API Service.
      * @required
      */
-    service: CartegraphService;
+    service?: CartegraphService;
 
     /**
      * @description Cartegraph class name. For example, cgSignsClass.
      * @required
      */
-    className: "cgSignsClass" | string;
+    className?: "cgSignsClass" | string;
 
     /**
      * @displayName ID
